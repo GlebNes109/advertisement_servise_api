@@ -1,0 +1,232 @@
+test_name: "Статистика объявлений"
+
+stages:
+  - name: "Создание объявление для Ромашки очень выгодной без таргета"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 5
+        cost_per_impression: 0.8
+        cost_per_click: 0.9
+        ad_title: "Покупайте рыбов"
+        ad_text: "Покупайте самых лучших и вкусных рыбов, отличных для котов"
+        start_date: 1
+        end_date: 2
+    response:
+      status_code: 200
+      save:
+        json:
+          cool_campaign_1: campaign_id
+  - name: "Получить статистику объявления 1 для Ромашки"
+    request:
+      url: "{BASE_URL}/stats/campaigns/{cool_campaign_1}"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        impressions_count: 0
+        clicks_count: 0
+        conversion: 0
+        spent_impressions: 0
+        spent_clicks: 0
+        spent_total: 0
+  - name: "Получить объявление для клиента Ивана: должно выпасть созданное для Ромашки"
+    request:
+      url: "{BASE_URL}/ads?client_id=1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        ad_id: "{cool_campaign_1}"
+        ad_title: "Покупайте рыбов"
+        ad_text: "Покупайте самых лучших и вкусных рыбов, отличных для котов"
+        advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+  - name: "Получить статистику объявления 1 для Ромашки"
+    request:
+      url: "{BASE_URL}/stats/campaigns/{cool_campaign_1}"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        impressions_count: 1
+        clicks_count: 0
+        conversion: 0
+        spent_impressions: 0.8
+        spent_clicks: 0
+        spent_total: 0.8
+  - name: "Получить объявление для клиента Анны: должно выпасть созданное для Ромашки"
+    request:
+      url: "{BASE_URL}/ads?client_id=fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        ad_id: "{cool_campaign_1}"
+        ad_title: "Покупайте рыбов"
+        ad_text: "Покупайте самых лучших и вкусных рыбов, отличных для котов"
+        advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+  - name: "Получить статистику объявления 1 для Ромашки (после 2х показов)"
+    request:
+      url: "{BASE_URL}/stats/campaigns/{cool_campaign_1}"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        impressions_count: 2
+        clicks_count: 0
+        conversion: 0
+        spent_impressions: 1.6
+        spent_clicks: 0
+        spent_total: 1.6
+  - name: "Меняем цену показа на объявление 1 с 0.8 на 1"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns/{cool_campaign_1}"
+      method: "PUT"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 10
+        cost_per_impression: 1
+        cost_per_click: 0.5
+        ad_title: "Покупайте рыбов"
+        ad_text: "Покупайте самых лучших и вкусных рыбов, отличных для котов"
+        start_date: 1
+        end_date: 2
+    response:
+      status_code: 200
+  - name: "Получить объявление для клиента Анны: должно выпасть созданное для Ромашки"
+    request:
+      url: "{BASE_URL}/ads?client_id=fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        ad_id: "{cool_campaign_1}"
+        ad_title: "Покупайте рыбов"
+        ad_text: "Покупайте самых лучших и вкусных рыбов, отличных для котов"
+        advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+  - name: "Получить статистику объявления 1 для Ромашки (после 3х показов и повышения цены)"
+    request:
+      url: "{BASE_URL}/stats/campaigns/{cool_campaign_1}"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        impressions_count: 2
+        clicks_count: 0
+        conversion: 0
+        spent_impressions: 1.6
+        spent_clicks: 0
+        spent_total: 1.6
+  - name: "Клик Анны по объявлению"
+    request:
+      url: "{BASE_URL}/ads/{cool_campaign_1}/click"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+    response:
+      status_code: 204
+  - name: "Клик Ивана по объявлению"
+    request:
+      url: "{BASE_URL}/ads/{cool_campaign_1}/click"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+    response:
+      status_code: 204
+  - name: "Получить статистику объявления 1 для Ромашки (после 3х показов и 2х кликов)"
+    request:
+      url: "{BASE_URL}/stats/campaigns/{cool_campaign_1}"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        impressions_count: 2
+        clicks_count: 2
+        conversion: 100
+        spent_impressions: 1.6
+        spent_clicks: 1
+        spent_total: 2.6
+  - name: "Установка дня 2"
+    request:
+      url: "{BASE_URL}/time/advance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        current_date: 2
+    response:
+      status_code: 200
+  - name: "Получить объявление для клиента Анны: на 2 день еще должно оно выпасть"
+    request:
+      url: "{BASE_URL}/ads?client_id=fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        ad_id: "{cool_campaign_1}"
+        ad_title: "Покупайте рыбов"
+        ad_text: "Покупайте самых лучших и вкусных рыбов, отличных для котов"
+        advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+  - name: "Установка дня 4"
+    request:
+      url: "{BASE_URL}/time/advance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        current_date: 4
+    response:
+      status_code: 200
+  - name: "Получить объявление для клиента Анны: на 4 день не должно выпасть ни одного"
+    request:
+      url: "{BASE_URL}/ads?client_id=fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 404
+  - name: "Получить ежедневную статистику объявлений для Ромашки"
+    request:
+      url: "{BASE_URL}/stats/campaigns/{cool_campaign_1}/daily"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        - impressions_count: 2
+          clicks_count: 2
+          conversion: 100
+          spent_impressions: 1.6
+          spent_clicks: 1
+          spent_total: 2.6
+          date: 1
+

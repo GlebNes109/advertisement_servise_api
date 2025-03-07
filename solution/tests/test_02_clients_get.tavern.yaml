@@ -1,0 +1,32 @@
+test_name: "Получение клиента"
+stages:
+  - name: "Запрос несуществующего клиента"
+    request:
+      url: "{BASE_URL}/clients/000"
+      method: "GET"
+    response:
+      status_code: 404
+  - name: "ПОлучить клиента MALE"
+    request:
+      url: "{BASE_URL}/clients/1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+      method: "GET"
+    response:
+      status_code: 200
+      json:
+        client_id: "1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+        login: "IvanovVano"
+        age: 25
+        location: "Moscow"
+        gender: "MALE"
+  - name: "ПОлучить клиента FEMALE"
+    request:
+      url: "{BASE_URL}/clients/fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+      method: "GET"
+    response:
+      status_code: 200
+      json:
+        client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+        login: "AnnaMaria"
+        age: 30
+        location: "Saint Petersburg"
+        gender: "FEMALE"

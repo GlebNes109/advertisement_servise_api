@@ -1,0 +1,32 @@
+test_name: "Установка дня"
+stages:
+  - name: "Попытка установить отрицательный день"
+    request:
+      url: "{BASE_URL}/time/advance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        current_date: -1
+    response:
+      status_code: 400
+  - name: "Попытка установить день не числом"
+    request:
+      url: "{BASE_URL}/time/advance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        current_date: "hohoho"
+    response:
+      status_code: 400
+  - name: "Установка валидного дня 1"
+    request:
+      url: "{BASE_URL}/time/advance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        current_date: 1
+    response:
+      status_code: 200

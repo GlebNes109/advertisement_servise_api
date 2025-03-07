@@ -1,0 +1,17 @@
+test_name: "Получение рекламодателей"
+stages:
+  - name: "Получение несуществующего рекламодателя"
+    request:
+      url: "{BASE_URL}/advertisers/000"
+      method: "GET"
+    response:
+      status_code: 404
+  - name: "Получение существующего рекламодателя"
+    request:
+      url: "{BASE_URL}/advertisers/412c6220-a8ee-4270-b18d-ab86c7122ceb"
+      method: "GET"
+    response:
+      status_code: 200
+      json:
+        advertiser_id: "412c6220-a8ee-4270-b18d-ab86c7122ceb"
+        name: "ООО Петросян"

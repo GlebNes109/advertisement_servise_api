@@ -1,0 +1,20 @@
+test_name: "Попытки добавить невалидные кампании"
+
+stages:
+  - name: "Создание невалидной кампании (старт дейт в прошлом)"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 5
+        cost_per_impression: 0.1
+        cost_per_click: 0.4
+        ad_title: "Покупайте гараж без таргета"
+        ad_text: "Лучшие гаражи на любой вкус в вашем районе, только сегодня со скидкой"
+        start_date: 0
+        end_date: 2
+    response:
+      status_code: 400

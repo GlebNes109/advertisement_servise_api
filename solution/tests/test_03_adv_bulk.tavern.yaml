@@ -1,0 +1,20 @@
+test_name: "Добавление рекламодателей"
+stages:
+  - name: "Создание через список"
+    request:
+      url: "{BASE_URL}/advertisers/bulk"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        - advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+          name: "Ромашка-Букашка"
+        - advertiser_id: "412c6220-a8ee-4270-b18d-ab86c7122ceb"
+          name: "ООО Петросян"
+    response:
+      status_code: 201
+      json:
+        - advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+          name: "Ромашка-Букашка"
+        - advertiser_id: "412c6220-a8ee-4270-b18d-ab86c7122ceb"
+          name: "ООО Петросян"

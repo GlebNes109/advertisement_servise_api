@@ -1,0 +1,109 @@
+test_name: "Добавление кампаний"
+
+stages:
+  - name: "Создание валидную кампанию пустой Таргет"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 5
+        cost_per_impression: 0.1
+        cost_per_click: 0.4
+        ad_title: "Покупайте гараж без таргета"
+        ad_text: "Лучшие гаражи на любой вкус в вашем районе, только сегодня со скидкой"
+        start_date: 1
+        end_date: 2
+    response:
+      status_code: 200
+      save:
+        json:
+          camp_empty_target: campaign_id
+  - name: "Получение одной кампании существующего рекламодателя (без таргета)"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns/{camp_empty_target}"
+      method: "GET"
+    response:
+      status_code: 200
+  - name: "Создать валидную кампанию заполненный Таргет"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 5
+        cost_per_impression: 0.1
+        cost_per_click: 0.4
+        ad_title: "Покупайте гараж мужчины 0-100 из Москвы"
+        ad_text: "Лучшие гаражи на любой вкус в вашем районе, только сегодня со скидкой"
+        start_date: 1
+        end_date: 2
+        targeting:
+          gender: "MALE"
+          age_from: 0
+          age_to: 100
+          location: "Moscow"
+    response:
+      status_code: 200
+  - name: "Создать валидную кампанию частично заполненный Таргет (gender)"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 5
+        cost_per_impression: 0.5
+        cost_per_click: 0.5
+        ad_title: "Покупайте гараж, мужчины"
+        ad_text: "Лучшие гаражи на любой вкус в вашем районе, только сегодня со скидкой"
+        start_date: 1
+        end_date: 2
+        targeting:
+          gender: "MALE"
+    response:
+      status_code: 200
+  - name: "Создать валидную кампанию частично заполненный Таргет (age)"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 5
+        cost_per_impression: 0.12
+        cost_per_click: 0.45
+        ad_title: "Покупайте гараж, люди 0-100"
+        ad_text: "Лучшие гаражи на любой вкус в вашем районе, только сегодня со скидкой"
+        start_date: 1
+        end_date: 2
+        targeting:
+          age_from: 0
+          age_to: 100
+    response:
+      status_code: 200
+  - name: "Создать валидную кампанию частично заполненный Таргет (location)"
+    request:
+      url: "{BASE_URL}/advertisers/051f6889-b61d-4bce-a9be-30afd93a5227/campaigns"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        impressions_limit: 10
+        clicks_limit: 5
+        cost_per_impression: 0.2
+        cost_per_click: 0.4
+        ad_title: "Покупайте гараж, Петербуржцы!"
+        ad_text: "Лучшие гаражи на любой вкус в вашем районе, только сегодня со скидкой"
+        start_date: 1
+        end_date: 2
+        targeting:
+          location: "Saint Petersburg"
+    response:
+      status_code: 200

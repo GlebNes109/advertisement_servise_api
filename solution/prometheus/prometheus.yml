@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'fastapi_metrics'
+    scrape_interval: 5s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['app:8080']
+
+  - job_name: 'fastapi_business_metrics'
+    scrape_interval: 20s
+    metrics_path: /business_metrics
+    static_configs:
+      - targets: ['app:8080']

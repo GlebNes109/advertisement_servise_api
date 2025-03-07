@@ -1,0 +1,74 @@
+test_name: "Добавление ML-скоров"
+stages:
+  - name: "Попытка создать невалидный скор по клиенту"
+    request:
+      url: "{BASE_URL}/ml-scores"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "000"
+        advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+        score: 0
+    response:
+      status_code: 404
+  - name: "Попытка создать невалидный скор по рекламодателю"
+    request:
+      url: "{BASE_URL}/ml-scores"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+        advertiser_id: "000"
+        score: 0
+    response:
+      status_code: 404
+  - name: "Создать валидный скор Иванов компания Ромашка"
+    request:
+      url: "{BASE_URL}/ml-scores"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+        advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+        score: 2
+    response:
+      status_code: 200
+  - name: "Создать валидный скор Иванов компания Петросян"
+    request:
+      url: "{BASE_URL}/ml-scores"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+        advertiser_id: "412c6220-a8ee-4270-b18d-ab86c7122ceb"
+        score: 5
+    response:
+      status_code: 200
+  - name: "Создать валидный скор Анна компания Ромашка"
+    request:
+      url: "{BASE_URL}/ml-scores"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+        advertiser_id: "051f6889-b61d-4bce-a9be-30afd93a5227"
+        score: 4
+    response:
+      status_code: 200
+  - name: "Создать валидный скор Анна компания Петросян"
+    request:
+      url: "{BASE_URL}/ml-scores"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+        advertiser_id: "412c6220-a8ee-4270-b18d-ab86c7122ceb"
+        score: 7
+    response:
+      status_code: 200

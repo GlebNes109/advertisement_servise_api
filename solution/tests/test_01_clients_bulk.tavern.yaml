@@ -1,0 +1,32 @@
+test_name: "Добавление клиентов"
+stages:
+  - name: "Отправка списка клиентов"
+    request:
+      url: "{BASE_URL}/clients/bulk"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        - client_id: "1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+          login: "IvanovVano"
+          age: 25
+          location: "Moscow"
+          gender: "MALE"
+        - client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+          login: "AnnaMaria"
+          age: 30
+          location: "Saint Petersburg"
+          gender: "FEMALE"
+    response:
+      status_code: 201
+      json:
+        - client_id: "1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+          login: "IvanovVano"
+          age: 25
+          location: "Moscow"
+          gender: "MALE"
+        - client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+          login: "AnnaMaria"
+          age: 30
+          location: "Saint Petersburg"
+          gender: "FEMALE"

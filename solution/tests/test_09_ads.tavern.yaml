@@ -1,0 +1,45 @@
+test_name: "Показ и клики на объявления"
+
+stages:
+  - name: "Получить объявление для клиента Ивана"
+    request:
+      url: "{BASE_URL}/ads?client_id=1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      save:
+        json:
+          ivan_ad_id: ad_id
+  - name: "Получить объявление для клиента Анны"
+    request:
+      url: "{BASE_URL}/ads?client_id=fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      save:
+        json:
+          anna_ad_id: ad_id
+  - name: "Клик Ивана по объявлению"
+    request:
+      url: "{BASE_URL}/ads/{ivan_ad_id}/click"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+          client_id: "1dd6f7b7-6261-4b85-b25a-cc4e23f7ed33"
+    response:
+      status_code: 204
+  - name: "Клик Анны по объявлению"
+    request:
+      url: "{BASE_URL}/ads/{anna_ad_id}/click"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      json:
+        client_id: "fe8e95b0-b15a-4748-acbd-b2047d4f856b"
+    response:
+      status_code: 204
